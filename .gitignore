@@ -6,3 +6,9 @@ __pycache__/
 *.blend1
 .DS_Store
 Thumbs.db
+*.mp4
+*.png
+*.glb
+*.fbx
+render_frames/
+

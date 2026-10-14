@@ -34,10 +34,13 @@ class BlenderBridge:
                 if not chunk:
                     break
                 response += chunk
-                if b"\n" in chunk:
-                    break
+                try:
+                    data = json.loads(response.decode("utf-8"))
+                    return data
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    continue
         
-        return json.loads(response.decode("utf-8"))
+        return json.loads(response.decode("utf-8")) if response else {}
 
     def check_connection(self) -> bool:
         """Verifica si el servidor de Blender está escuchando en el puerto configurado."""
