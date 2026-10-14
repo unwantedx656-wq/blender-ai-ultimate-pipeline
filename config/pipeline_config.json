@@ -1,5 +1,5 @@
 {
-  "active_engine": "meshy",
+  "active_engine": "trellis_local",
   "meshy": {
     "api_key": "",
     "model": "meshy-6",
