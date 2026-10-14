@@ -1,0 +1,21 @@
+{
+  "active_engine": "meshy",
+  "meshy": {
+    "api_key": "",
+    "model": "meshy-6",
+    "topology": "quad",
+    "target_polycount": 35000,
+    "enable_pbr": true
+  },
+  "trellis": {
+    "local_repo_path": "D:\\AI_Tools\\trellis",
+    "device": "auto",
+    "execution_mode": "gradio_cloud",
+    "model_id": "microsoft/TRELLIS-image-large",
+    "output_dir": "D:\\AI_Tools\\models"
+  },
+  "blender": {
+    "host": "localhost",
+    "port": 9876
+  }
+}

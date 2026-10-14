@@ -28,19 +28,73 @@ Diseñado para empoderar a agentes de Inteligencia Artificial (Antigravity, Clau
 
 ---
 
+## 🎛️ Panel de Control Visual: Blender AI Ultimate Studio
+
+El repositorio incluye una interfaz web interactiva tipo dashboard para seleccionar visualmente el motor, configurar credenciales, auditar el hardware local y ejecutar el pipeline:
+
+```bash
+# Iniciar el servidor local de Studio
+python studio/server.py 5050
+```
+Luego abre tu navegador en: **`http://localhost:5050`**
+
+### Capacidades del Studio:
+1. **Selector Visual de Motor**:
+   - ☁️ **Meshy-6 API**: Remesh quad de alta fidelidad (10/10) con PBR completo (predeterminado).
+   - 💻 **Microsoft TRELLIS**: Reconstrucción local en `D:\AI_Tools\trellis` (8.8/10), 100% gratuita y sin consumo de tokens.
+2. **Configuración de Credenciales**:
+   - Input interactivo para `MESHY_API_KEY` con validación y prueba en vivo contra los servidores de Meshy.
+   - Guía paso a paso integrada para obtener la clave con 100 créditos gratis.
+3. **Auditoría de Hardware Local**:
+   - Monitoreo de CPU (AMD Ryzen 7 5700X), RAM (64 GB DDR4) y GPU (Intel Arc A750 8GB).
+   - Verificación de integridad del submódulo `FlexiCubes` y estado del Disco D: (evitando saturar el Disco C:).
+4. **Telemetría y Conexión Blender MCP**:
+   - Comprobación en tiempo real del socket `localhost:9876` e ingesta directa de modelos a la escena.
+
+---
+
+## 🔑 Cómo Obtener tu API Key Gratuita de Meshy (100 Créditos)
+
+1. Ingresa a [https://www.meshy.ai/](https://www.meshy.ai/) y presiona **"Get Started Free"**.
+2. Regístrate con tu cuenta de Google, GitHub o correo electrónico. Al crear la cuenta gratuita recibirás **100 créditos de bienvenida**.
+3. Ve a tu panel de usuario: **Settings &rarr; API Keys** (o directamente a [https://www.meshy.ai/settings/api-keys](https://www.meshy.ai/settings/api-keys)).
+4. Haz clic en **"Create API Key"**, copia la clave generada (comienza con `msy_`).
+5. Pégala en el panel de **Blender AI Ultimate Studio** (`http://localhost:5050`) y presiona **"Guardar y Probar"** o configúrala en `config/pipeline_config.json`.
+
+---
+
+## 💻 Adaptación Local de Microsoft TRELLIS (Disco D:)
+
+Para garantizar el rendimiento óptimo del sistema y proteger los recursos de la máquina:
+- **Directorio de Instalación**: `D:\AI_Tools\trellis` con el submódulo `flexicubes` clonado.
+- **Protección de Almacenamiento**: Todos los checkpoints y pesos se dirigen a `D:\AI_Tools\models` o `D:\AI_Tools\cache`, conservando íntegro el espacio del Disco C:.
+- **Aceleración Hardware**: Optimizado para aprovechar la memoria de 64 GB RAM y los 16 hilos del Ryzen 7 5700X, junto con la GPU Intel Arc A750 de 8 GB VRAM.
+
+---
+
 ## 📁 Estructura del Repositorio
 
 ```text
 blender-ai-ultimate-pipeline/
 ├── .agents/
 │   └── skills/
-│       └── blender-ultimate-artist/    # Skill Maestra para Antigravity / Claude
+│       └── blender-ultimate-artist/    # Skill Maestra unificada para Antigravity / Claude
 │           └── SKILL.md
+├── config/
+│   └── pipeline_config.json            # Configuración de motores, API keys y puertos
 ├── core/
-│   ├── image_to_3d_client.py           # Cliente híbrido de reconstrucción 3D
-│   ├── camera_cinematics.py            # Generador de animaciones de cámara
-│   ├── animation_engine.py             # Implementación de los 12 principios Disney
+│   ├── hybrid_3d_engine.py             # Orquestador híbrido Meshy API + TRELLIS
+│   ├── image_to_3d_client.py           # Cliente Image-to-3D
+│   ├── camera_cinematics.py            # Generador de animaciones y cámaras 360°
+│   ├── animation_engine.py             # Los 12 principios de animación de Disney
 │   └── blender_mcp_bridge.py           # Enlace socket TCP 9876 con Blender
+├── studio/                             # Interfaz Web Visual (Dashboard Glassmorphism)
+│   ├── server.py                       # Servidor HTTP local en puerto 5050
+│   └── static/                         # Frontend Vanilla HTML5/CSS3/JS
+│       ├── index.html
+│       ├── style.css
+│       ├── app.js
+│       └── referencia.jpg
 ├── tools/                              # Herramientas de texturas y exportación
 │   ├── polyhaven-studio-setup/
 │   ├── polyhaven-texture-apply/
@@ -48,7 +102,7 @@ blender-ai-ultimate-pipeline/
 │   └── threejs-export/
 ├── examples/                           # Scripts de prueba y recetas
 ├── docs/                               # Documentación técnica
-├── requirements.txt                    # Dependencias ligeras de Python
+├── requirements.txt                    # Dependencias de Python
 └── README.md
 ```
 
@@ -56,34 +110,26 @@ blender-ai-ultimate-pipeline/
 
 ## 🛠️ Instalación y Configuración Rápida
 
-### 1. Requisitos Previos
-- **Blender 4.2+ o 5.x LTS** instalado (ej. `D:\Blender\blender.exe`).
-- Addon de Blender MCP activo escuchando en el puerto TCP `9876`.
-- Python 3.10+ instalado.
-
-### 2. Configurar Variables de Entorno (Opcional para Nube)
-Para habilitar la generación neuronal en la nube:
+### 1. Iniciar el Studio Web
 ```powershell
-$env:MESHY_API_KEY = "tu_clave_de_meshy_aqui"
+python studio/server.py 5050
 ```
 
-### 3. Conexión con Blender vía Socket
+### 2. Uso Programático del Orquestador Híbrido
 ```python
-from core.blender_mcp_bridge import BlenderBridge
+from core.hybrid_3d_engine import Hybrid3DEngine
 
-bridge = BlenderBridge()
-if bridge.check_connection():
-    print("Conectado con éxito a Blender.")
-```
+engine = Hybrid3DEngine()
 
-### 4. Generar Animación Turntable 360°
-```python
-from core.camera_cinematics import generate_turntable_code
-from core.blender_mcp_bridge import BlenderBridge
+# Seleccionar motor: "meshy" o "trellis_local"
+engine.set_engine("meshy")
 
-code = generate_turntable_code(target_name="MiModelo", frames=120)
-bridge = BlenderBridge()
-bridge.send_code(code)
+# Configurar API Key
+engine.set_meshy_api_key("msy_tu_clave_aqui")
+
+# Verificar estado de todo el sistema
+status = engine.get_full_status()
+print(status)
 ```
 
 ---

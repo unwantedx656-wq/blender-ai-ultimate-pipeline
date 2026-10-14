@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blender AI Ultimate Studio — Panel de Control Híbrido</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="background-glows">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-group">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="logo-title">Blender AI <span>Ultimate Studio</span></h1>
+          <p class="logo-subtitle">Pipeline Híbrido Neuronal Image-to-3D & Master Skill</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="status-badge" id="blender-badge">
+          <span class="status-dot dot-red" id="blender-dot"></span>
+          <span id="blender-status-text">Blender MCP: Desconectado</span>
+        </div>
+        <div class="status-badge" id="disk-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          <span>Disco D: 154 GB Libres</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="studio-grid">
+      <!-- Left Column: Engine Selector & Config -->
+      <section class="studio-card main-config-card">
+        <div class="card-header">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M5.3 5.3l13.4 13.4M5.3 18.7L18.7 5.3"/></svg>
+          </div>
+          <div>
+            <h2>Selector de Motor Neuronal 3D</h2>
+            <p>Selecciona manualmente el backend de reconstrucción predeterminado</p>
+          </div>
+        </div>
+
+        <!-- Visual Selector Cards -->
+        <div class="engine-selector-grid">
+          <!-- Engine 1: Meshy API -->
+          <div class="engine-option-card active" id="card-engine-meshy" onclick="selectEngine('meshy')">
+            <div class="card-radio">
+              <input type="radio" name="engine" id="radio-meshy" value="meshy" checked>
+              <label for="radio-meshy"></label>
+            </div>
+            <div class="engine-info">
+              <div class="engine-title-row">
+                <h3>Meshy-6 API <span class="tag-badge tag-cloud">Nube / API</span></h3>
+                <span class="score-pill">Calidad 10 / 10</span>
+              </div>
+              <p class="engine-desc">Topología Quad automática, mapas PBR completos (Albedo, Normal, Roughness) y reconstrucción 360°.</p>
+              <div class="engine-meta">
+                <span>⚡ Tiempo: ~60-90 seg</span>
+                <span>💎 Requiere: API Key (100 cr. gratis)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Engine 2: Microsoft TRELLIS -->
+          <div class="engine-option-card" id="card-engine-trellis" onclick="selectEngine('trellis_local')">
+            <div class="card-radio">
+              <input type="radio" name="engine" id="radio-trellis" value="trellis_local">
+              <label for="radio-trellis"></label>
+            </div>
+            <div class="engine-info">
+              <div class="engine-title-row">
+                <h3>Microsoft TRELLIS <span class="tag-badge tag-local">Local en D:\</span></h3>
+                <span class="score-pill score-local">Calidad 8.8 / 10</span>
+              </div>
+              <p class="engine-desc">Reconstrucción neuronal open-source de alta fidelidad. Geometría afilada sin costo de tokens.</p>
+              <div class="engine-meta">
+                <span>📁 Ubicación: D:\AI_Tools\trellis</span>
+                <span>🔥 100% Gratuito e Ilimitado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div class="config-tabs-container">
+          <div class="config-tab-headers">
+            <button class="tab-btn active" id="tab-btn-meshy" onclick="switchTab('meshy')">Configuración Meshy API</button>
+            <button class="tab-btn" id="tab-btn-trellis" onclick="switchTab('trellis')">Diagnóstico Local TRELLIS</button>
+            <button class="tab-btn" id="tab-btn-blender" onclick="switchTab('blender')">Conexión Blender MCP</button>
+          </div>
+
+          <!-- Tab Content: Meshy -->
+          <div class="tab-content active" id="tab-content-meshy">
+            <div class="form-group">
+              <label for="input-meshy-key">Clave de API de Meshy (MESHY_API_KEY):</label>
+              <div class="input-with-button">
+                <input type="password" id="input-meshy-key" placeholder="msy_xxxxxxxxxxxxxxxxxxxxxxxx">
+                <button class="btn btn-secondary" onclick="toggleKeyVisibility()">👁️</button>
+                <button class="btn btn-primary" onclick="saveMeshyKey()">Guardar y Probar</button>
+              </div>
+              <p class="input-help" id="meshy-key-status">Comprobando clave...</p>
+            </div>
+
+            <!-- Free Key Guide Accordion -->
+            <div class="accordion-guide">
+              <button class="accordion-toggle" onclick="toggleGuide()">
+                <span>💡 ¿Cómo obtener tu API Key gratuita de Meshy con 100 créditos?</span>
+                <span id="accordion-arrow">▼</span>
+              </button>
+              <div class="accordion-body" id="guide-body">
+                <ol class="guide-steps">
+                  <li>Ingresa a <a href="https://www.meshy.ai/" target="_blank" rel="noopener">www.meshy.ai</a> y haz clic en <strong>"Sign In"</strong> o <strong>"Get Started Free"</strong>.</li>
+                  <li>Inicia sesión con tu cuenta de Google, GitHub o correo electrónico (te asignarán automáticamente 100 o 200 créditos gratuitos de bienvenida).</li>
+                  <li>Dirígete a tu panel de configuración: <strong>Settings &rarr; API Keys</strong> (o <a href="https://www.meshy.ai/settings/api-keys" target="_blank" rel="noopener">meshy.ai/settings/api-keys</a>).</li>
+                  <li>Haz clic en <strong>"Create API Key"</strong>, cópiala (inicia con <code>msy_</code>) y pégala en el campo de arriba.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content: TRELLIS -->
+          <div class="tab-content" id="tab-content-trellis">
+            <div class="hardware-spec-card">
+              <div class="spec-title">Hardware Detectado en tu Sistema:</div>
+              <div class="spec-grid">
+                <div class="spec-item">
+                  <span class="spec-label">Procesador (CPU):</span>
+                  <span class="spec-val">AMD Ryzen 7 5700X (8C / 16T)</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Memoria RAM:</span>
+                  <span class="spec-val">64.0 GB DDR4</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Tarjeta Gráfica:</span>
+                  <span class="spec-val">Intel Arc A750 Graphics (8 GB)</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Directorio Local:</span>
+                  <span class="spec-val">D:\AI_Tools\trellis (Instalado)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="trellis-actions">
+              <div class="trellis-status-box" id="trellis-status-box">
+                <span class="status-dot dot-green"></span>
+                <span id="trellis-status-text">Repositorio local verificado con submódulos en Disco D:.</span>
+              </div>
+              <button class="btn btn-secondary" onclick="checkLocalTrellis()">Verificar Estado de TRELLIS</button>
+            </div>
+          </div>
+
+          <!-- Tab Content: Blender MCP -->
+          <div class="tab-content" id="tab-content-blender">
+            <div class="blender-connect-box">
+              <p>Puerto de escucha socket: <code>localhost:9876</code></p>
+              <p class="blender-msg" id="blender-msg-detail">Comprobando socket...</p>
+              <button class="btn btn-primary" onclick="checkBlenderConnection()">Reintentar Conexión con Blender</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Model Test & Pipeline Dispatcher -->
+      <section class="studio-card pipeline-card">
+        <div class="card-header">
+          <div class="section-icon icon-purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          </div>
+          <div>
+            <h2>Lanzador del Pipeline Híbrido</h2>
+            <p>Genera geometría 3D e impórtala automáticamente en Blender</p>
+          </div>
+        </div>
+
+        <div class="preview-box">
+          <div class="image-preview-slot">
+            <img src="/referencia.jpg" alt="Imagen de Referencia" id="preview-img" onerror="this.src='https://placehold.co/400x400/181a20/00e5ff?text=Referencia+2D'">
+            <div class="img-caption">referencia.jpg (400x400)</div>
+          </div>
+          <div class="pipeline-summary-box">
+            <div class="summary-row">
+              <span>Motor Activo:</span>
+              <strong id="summary-engine" class="glow-text">Meshy-6 API</strong>
+            </div>
+            <div class="summary-row">
+              <span>Formato de Salida:</span>
+              <strong>GLB Quad Mesh (PBR Textures)</strong>
+            </div>
+            <div class="summary-row">
+              <span>Destino:</span>
+              <strong>Blender 5.2.2 Live Scene</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons-row">
+          <button class="btn btn-launch" onclick="launchPipeline()">
+            <span>🚀 Generar Malla 3D & Ingestar en Blender</span>
+          </button>
+        </div>
+
+        <!-- Live Activity Console -->
+        <div class="terminal-container">
+          <div class="terminal-header">
+            <span>Consola de Telemetría y Pipeline</span>
+            <span class="terminal-dot"></span>
+          </div>
+          <div class="terminal-body" id="log-terminal">
+            <div class="log-line log-info">[INFO] Sistema inicializado en modo híbrido.</div>
+            <div class="log-line log-success">[INFO] Directorio de modelos: D:\AI_Tools\models</div>
+            <div class="log-line log-info">[LISTO] Esperando comando del operador...</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
